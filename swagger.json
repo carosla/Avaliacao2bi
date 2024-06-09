@@ -1,0 +1,215 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API de Gerenciamento de Produtos",
+      "description": "API para gerenciar produtos em um sistema de comércio eletrônico",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/",
+        "description": "Servidor local"
+      },
+      {
+        "url": "http://www.anacarolinaneias.com",
+        "description": "API de produção"
+      }
+    ],
+    "paths": {
+      "/produto": {
+        "get": {
+          "summary": "Lista todos os produtos",
+          "operationId": "listProducts",
+          "description": "Retorna uma lista de todos os produtos cadastrados",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Produto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Adiciona um novo produto",
+          "operationId": "addProduct",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Produto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Produto cadastrado com sucesso"
+            },
+            "422": {
+              "description": "Dados insuficientes para cadastrar o produto"
+            },
+            "500": {
+              "description": "Erro interno do servidor"
+            }
+          }
+        }
+      },
+      "/produto/{id}": {
+        "put": {
+          "summary": "Atualiza um produto existente",
+          "operationId": "updateProduct",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID do produto a ser atualizado",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Produto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Produto atualizado com sucesso"
+            },
+            "404": {
+              "description": "Produto não encontrado"
+            },
+            "422": {
+              "description": "Nenhum campo válido foi fornecido para atualização"
+            },
+            "500": {
+              "description": "Erro interno do servidor"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Remove um produto existente",
+          "operationId": "deleteProduct",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID do produto a ser removido",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Produto removido com sucesso"
+            },
+            "404": {
+              "description": "Produto não encontrado"
+            },
+            "500": {
+              "description": "Erro interno do servidor"
+            }
+          }
+        }
+      },
+      "/produto/search": {
+        "get": {
+          "summary": "Busca um produto por ID ou nome",
+          "operationId": "getProductByIdOrName",
+          "description": "Retorna um produto específico por seu ID ou nome",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "description": "ID do produto a ser buscado",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "query",
+              "name": "nome",
+              "description": "Nome do produto a ser buscado",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Produto"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Produto não encontrado"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Produto": {
+          "type": "object",
+          "properties": {
+            "nome": {
+              "type": "string",
+              "description": "Nome do produto"
+            },
+            "descricao": {
+              "type": "string",
+              "description": "Descrição do produto"
+            },
+            "cor": {
+              "type": "string",
+              "description": "Cor do produto"
+            },
+            "peso": {
+              "type": "number",
+              "description": "Peso do produto"
+            },
+            "tipo": {
+              "type": "string",
+              "description": "Tipo do produto"
+            },
+            "preco": {
+              "type": "number",
+              "description": "Preço do produto"
+            },
+            "dataCadastro": {
+              "type": "string",
+              "format": "date",
+              "description": "Data de cadastro do produto"
+            }
+          }
+        }
+      }
+    }
+  }
+  
